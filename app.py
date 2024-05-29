@@ -1,10 +1,10 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Hotel booking predictor", # => Quick reference - Streamlit
-    page_icon="🏩",
-    layout="centered", # wide
-    initial_sidebar_state="auto") # collapsed
+# st.set_page_config(
+#     page_title="Hotel booking predictor", # => Quick reference - Streamlit
+#     page_icon="🏩",
+#     layout="centered", # wide
+#     initial_sidebar_state="auto") # collapsed
 
 CSS = """
 h1 {
@@ -12,6 +12,9 @@ h1 {
 }
 p {
     color: #ffffff;
+}
+button[kind='primary'] {
+
 }
 button[kind='secondary'] {
     color: #ffffff;
