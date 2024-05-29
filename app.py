@@ -1,59 +1,9 @@
 import streamlit as st
+import os
 
-CSS = """
-h1 {
-    color: #ffffff;
-}
-h2 {
-    color: #ffffff;
-}
-p {
-    color: #ffffff;
-}
-button[kind='primary'] {
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-}
-button[kind='secondary'] {
-    color: #ffffff;
-    background-color: #FF4B4B;
-}
-div[data-testid='stTickBarMax'] {
-    color: #ffffff;
-}
-div[data-testid='stTickBarMin'] {
-    color: #ffffff;
-}
-div[data-testid='stThumbValue'] {
-    color: #ffffff;
-}
-div[data-testid='stNotificationContentSuccess'] {
-    color = #ffffff;
-    font-weight = bold;
-    font-size = 20px;
-}
-dic[data-baseweb='tab'] {
-    background-color = #FF4B4B;
-}
-
-.stApp {
-    background-color: #20365e;
-    background-size: cover;
-}
-
-"""
-Slider_Cursor = st.markdown('''
-    <style>
-        div.stSlider > div[data-baseweb="slider"] > div > div > div[role="slider"] {
-            background-color: #ffffff;
-        }
-    </style>''', unsafe_allow_html=True)
-
-Slider_Number = st.markdown('''
-    <style>
-        div.stSlider > div[data-baseweb="slider"] > div > div > div > div {
-            color: #ffffff;
-        }
-    </style>''', unsafe_allow_html=True)
+# st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 hide_streamlit_style = """
             <style>
@@ -65,10 +15,12 @@ hide_streamlit_style = """
                 .st-emotion-cache-uf99v8 {display: none;}
             </style>
             """
+
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
-
+css_path = os.path.join('..', 'demand_prediction_app', 'style.css')
+with open(css_path) as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 #Title
 '''
 # Hotel booking predictor
@@ -80,7 +32,6 @@ st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 tab1, tab2 = st.tabs(['Cancellation predictor', 'Target country predictor'])
 
 with tab1:
-    st.header('Cancellation predictor')
     #Intro
     st.markdown('''
     Predict the cancellation propability for a specific booking:
@@ -128,7 +79,6 @@ with tab1:
         dummy_data = 0.6
     else: dummy_data = 0.3
 
-
     if st.button('Check cancellation probability'):
         if dummy_data < 0.5:
             st.success(f'Congrats! The cancellation probability for this booking is {dummy_data * 100:.0f} %')
@@ -138,4 +88,48 @@ with tab1:
             st.error(f'Oh no! The cancellation probability for this booking is {dummy_data * 100:.0f} %')
 
 with tab2:
-   st.header('Target country predictor')
+    #Intro
+    st.markdown('''Predict the target country for marketing campaigns for certain booking types:
+    ''')
+
+    #Input
+    #Columns
+    columns_5 = st.columns(2)
+    #adr
+        #Range with toggle bar
+    adr_c = columns_5[0].slider('Potential average daily rate ($):', 0, 1000, 100)
+    #Month
+    months_c = [1,2,3,4,5,6,7,8,9,10,11,12]
+    month_c = columns_5[1].selectbox('Potential month of arrival:', months_c)
+        #Columns
+    columns_6 = st.columns(2)
+    #lead_time
+        #Range with toggle bar
+    lead_time_c = columns_6[0].slider('Days until potential arrival:', 1, 100, 30)
+    #stays_in_week_nights
+        #range with toggle bar
+    stays_in_week_nights_c = columns_6[1].slider('Potential number of weekday nights:', 0, 50, 3)
+
+    #Dummy data
+#     Unique values in column 'country':
+# ['PRT' 'GBR' 'USA' 'ESP' 'IRL' 'FRA' 'ROU' 'NOR' 'OMN' 'ARG' 'POL' 'DEU'
+#  'BEL' 'CHE' 'CN' 'GRC' 'ITA' 'NLD' 'DNK' 'RUS' 'SWE' 'AUS' 'EST' 'CZE'
+#  'BRA' 'FIN' 'MOZ' 'BWA' 'LUX' 'SVN' 'ALB' 'IND' 'CHN' 'MEX' 'MAR' 'UKR'
+#  'SMR' 'LVA' 'PRI' 'SRB' 'CHL' 'AUT' 'BLR' 'LTU' 'TUR' 'ZAF' 'AGO' 'ISR'
+#  'CYM' 'ZMB' 'CPV' 'ZWE' 'DZA' 'KOR' 'CRI' 'HUN' 'ARE' 'TUN' 'JAM' 'HRV'
+#  'HKG' 'IRN' 'GEO' 'AND' 'GIB' 'URY' 'JEY' 'CAF' 'CYP' 'COL' 'GGY' 'KWT'
+#  'NGA' 'MDV' 'VEN' 'SVK' 'FJI' 'KAZ' 'PAK' 'IDN' 'LBN' 'PHL' 'SEN' 'SYC'
+#  'AZE' 'BHR' 'NZL' 'THA' 'DOM' 'MKD' 'MYS' 'ARM' 'JPN' 'LKA' 'CUB' 'CMR'
+#  'BIH' 'MUS' 'COM' 'SUR' 'UGA' 'BGR' 'CIV' 'JOR' 'SYR' 'SGP' 'BDI' 'SAU'
+#  'VNM' 'PLW' 'QAT' 'EGY' 'PER' 'MLT' 'MWI' 'ECU' 'MDG' 'ISL' 'UZB' 'NPL'
+#  'BHS' 'MAC' 'TGO' 'TWN' 'DJI' 'STP' 'KNA' 'ETH' 'IRQ' 'HND' 'RWA' 'KHM'
+#  'MCO' 'BGD' 'IMN' 'TJK' 'NIC' 'BEN' 'VGB' 'TZA' 'GAB' 'GHA' 'TMP' 'GLP'
+#  'KEN' 'LIE' 'GNB' 'MNE' 'UMI' 'MYT' 'FRO' 'MMR' 'PAN' 'BFA' 'LBY' 'MLI'
+#  'NAM' 'BOL' 'PRY' 'BRB' 'ABW' 'AIA' 'SLV' 'DMA' 'PYF' 'GUY' 'LCA' 'ATA'
+#  'GTM' 'ASM' 'MRT' 'NCL' 'KIR' 'SDN' 'ATF' 'SLE' 'LAO']
+    dict_of_countries = {'PRT': 'Portugal', 'GBR': 'Great Britain'}
+    country_pred = dict_of_countries['PRT']
+
+    #Get prediction
+    if st.button('Check target country'):
+        st.write(f'Your potential bookings will most likely be done by people from {country_pred}.')
