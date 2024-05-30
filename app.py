@@ -3,6 +3,12 @@ import pandas as pd
 import requests
 import os
 
+st.set_page_config(
+        # page_title="Hello world",
+        page_icon="🏩",
+        layout="wide",
+    )
+
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
@@ -23,6 +29,8 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 css_path = os.path.join('..', 'demand_prediction_app', 'style.css')
 with open(css_path) as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
 #Title
 '''
 # HOTEL BOOKING PREDICTOR
@@ -38,8 +46,6 @@ with tab1:
     st.markdown('''
     The cancellation predictor tells you if a hotel booking will be cancelled with an acurate probability. To predict the cancellation probability for an individual booking, please insert the booking parameters of the booking:
                 ''')
-
-    probability_is_cancelled = 0.5
 
     #Input
     #adr
@@ -131,7 +137,7 @@ with tab1:
         if st.button('Check cancellation probability'):
             response = requests.get(url, params=params)
             if response.status_code == 200:
-                country_pred = response.json()['OUTPUT_CANCELLATION']
+                probability_is_cancelled = response.json()['OUTPUT_CANCELLATION']
                 if probability_is_cancelled < 0.5:
                     st.success(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
                 elif probability_is_cancelled < 0.8:
