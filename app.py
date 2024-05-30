@@ -4,7 +4,7 @@ import requests
 import os
 
 st.set_page_config(
-        # page_title="Hello world",
+        page_title="Hello world",
         page_icon="🏩",
         layout="wide",
     )
@@ -44,10 +44,16 @@ tab1, tab2 = st.tabs(['Cancellation predictor', 'Target country predictor'])
 with tab1:
     #Intro
     st.markdown('''
-    The cancellation predictor tells you if a hotel booking will be cancelled with an acurate probability. To predict the cancellation probability for an individual booking, please insert the booking parameters of the booking:
+    The cancellation predictor tells you if a hotel booking will be cancelled with an acurate probability. To predict the cancellation probability for an individual booking, please insert the booking parameters of the booking.
+                ''')
+    st.markdown('''
+    ######
                 ''')
 
     #Input
+    st.markdown('''
+    ##### Check booking:
+                ''')
     #adr
         #Range with toggle bar
     adr = st.slider('Average daily rate ($):', 0, 1000, 100)
@@ -118,11 +124,11 @@ with tab1:
                 probability_is_cancelled = 0.6
             else: probability_is_cancelled = 0.3
             if probability_is_cancelled < 0.5:
-                st.success(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
             elif probability_is_cancelled < 0.8:
-                st.warning(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                st.write(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
             else:
-                st.error(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                st.write(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
     else:
         params = {
             'country': country_code,
@@ -139,11 +145,11 @@ with tab1:
             if response.status_code == 200:
                 probability_is_cancelled = response.json()['OUTPUT_CANCELLATION']
                 if probability_is_cancelled < 0.5:
-                    st.success(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                    st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
                 elif probability_is_cancelled < 0.8:
-                    st.warning(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                    st.write(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
                 else:
-                    st.error(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                    st.write(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
             else:
                 st.write('Error in API call')
 

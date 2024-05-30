@@ -2,7 +2,12 @@
   background-color: #20365e;
   background-size: cover;
 }
+.block-container {
+  padding-top: 20px;
+}
+
 h1 {
+  padding-bottom: 20px;
   color: #ffffff;
   font-size: 300%;
   font-weight: bold;
@@ -12,18 +17,28 @@ h2 {
   color: #ffffff;
   /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
+h3, h4, h5, h6 {
+  color: #ffffff;
+  font-weight: normal;
+  /* font-family: 'WF Visual Sans Text', sans-serif; */
+}
 p {
   color: #ffffff;
   /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
 
 .stTabs [data-baseweb='tab-list'] {
+  /* padding-bottom: 8px; */
   background-color: #20365e;
 }
 
 .stTabs [data-baseweb="tab-list"] button [data-testid='stMarkdownContainer'] p {
   font-size: 170%;
   font-weight: normal;
+}
+.stTabs [data-baseweb='tab-panel'] {
+  padding-top: 15px;
+  /* background-color: #ffffff; */
 }
 
 /* .stTabs [aria-selected="true"] p {
