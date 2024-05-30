@@ -1,20 +1,36 @@
+.stApp {
+  background-color: #20365e;
+  background-size: cover;
+}
 h1 {
   color: #ffffff;
+  font-size: 300%;
+  font-weight: bold;
+  /* font-family: 'WF Visual Sans Text', sans-serif;*/
 }
-
 h2 {
   color: #ffffff;
+  /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
 p {
   color: #ffffff;
+  /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
 
-/* button[kind='primary'] {
+.stTabs [data-baseweb='tab-list'] {
+  background-color: #20365e;
+}
 
+.stTabs [data-baseweb="tab-list"] button [data-testid='stMarkdownContainer'] p {
+  font-size: 170%;
+  font-weight: normal;
+}
+
+/* .stTabs [aria-selected="true"] p {
 } */
-button[kind='secondary'] {
-  color: #ffffff;
-  background-color: #FF4B4B;
+
+.stTabs [aria-selected="false"] p {
+  color: #c9c9c9;
 }
 
 div[data-testid='stTickBarMax'] {
@@ -26,25 +42,22 @@ div[data-testid='stTickBarMin'] {
 div[data-testid='stThumbValue'] {
   color: #ffffff;
 }
+div.stSlider > div[data-baseweb="slider"] > div > div > div[role="slider"] {
+  background-color: #ffffff;
+}
+
+div.stSlider > div[data-baseweb="slider"] > div > div > div > div {
+  color: #ffffff;
+}
+/* button[kind='primary'] {
+
+} */
+button[kind='secondary'] {
+  color: #ffffff;
+  background-color: #FF4B4B;
+}
 div[data-testid='stNotificationContentSuccess'] {
   color: #ffffff;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 150%;
 }
-
-dic[data-baseweb='tab'] {
-    background-color: #FF4B4B;
-}
-
-.stApp {
-  background-color: #20365e;
-  background-size: cover;
-}
-
-div.stSlider > div[data-baseweb="slider"] > div > div > div[role="slider"] {
-            background-color: #ffffff;
-        }
-
-div.stSlider > div[data-baseweb="slider"] > div > div > div > div {
-            color: #ffffff;
-        }
