@@ -10,10 +10,6 @@ st.set_page_config(
         layout="wide",
     )
 
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-# st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
-
 hide_streamlit_style = """
             <style>
                 /* Hide the Streamlit header and menu */
@@ -36,10 +32,6 @@ with open(css_path) as f:
 '''
 # HOTEL BOOKING PREDICTOR
 '''
-
-#Create second page: https://docs.streamlit.io/develop/api-reference/layout/st.tabs
-#Target 'country' X = 'arrival_date_month', 'adr', 'lead_time', 'stays_in_week_nights'
-
 tab1, tab2 = st.tabs(['Cancellation predictor', 'Target country predictor'])
 
 with tab1:
@@ -53,14 +45,13 @@ with tab1:
 
     #Input
     st.markdown('''
-    ##### Check booking:
+    ##### Insert booking data:
                 ''')
     #adr
         #Range with toggle bar
     adr = st.slider('Average daily rate in US $: (The average daily rate for bookings is 108.)', 0, 1000, 108)
-    # st.markdown('''
-    #             <p style="font-size:12px;">The average daily rate for bookings is 108 $.</p>
-    #             ''', unsafe_allow_html=True)
+    adr_plus = adr + 20
+    adr_minus = adr - 20
     #Columns
     columns_1 = st.columns(2)
     #country
@@ -103,6 +94,8 @@ with tab1:
     #lead_time
         #Range with toggle bar
     lead_time = columns_2[0].slider('Days between time of booking and arrival: (The average delta between booking and arrival is 80 days.)', 1, 100, 30)
+    lead_time_plus = lead_time + 20
+    lead_time_minus = lead_time - 20
     #stays_in_week_nights
         #range with toggle bar
     stays_in_week_nights = columns_2[1].slider('Booked weekday nights:', 0, 50, 3)
@@ -141,17 +134,17 @@ with tab1:
             else:
                 probability_is_cancelled_minus_adr = 0.2
             if month in ['October', 'November', 'December']:
-                probability_is_cancelled_plus_baa = 0.87
+                probability_is_cancelled_plus_lead_time = 0.87
             elif month in ['June', 'July', 'August', 'September']:
-                probability_is_cancelled_plus_baa = 0.73
+                probability_is_cancelled_plus_lead_time = 0.73
             else:
-                probability_is_cancelled_plus_baa = 0.53
+                probability_is_cancelled_plus_lead_time = 0.53
             if month in ['October', 'November', 'December']:
-                probability_is_cancelled_minus_baa = 0.67
+                probability_is_cancelled_minus_lead_time = 0.67
             elif month in ['June', 'July', 'August', 'September']:
-                probability_is_cancelled_minus_baa = 0.37
+                probability_is_cancelled_minus_lead_time = 0.37
             else:
-                probability_is_cancelled_minus_baa = 0.23
+                probability_is_cancelled_minus_lead_time = 0.23
             st.markdown('''
                 ######
                 ''')
@@ -162,9 +155,8 @@ with tab1:
             columns_7[0].metric('Cancellation probability:', f'{probability_is_cancelled * 100:.0f}  %', 'current booking')
             columns_7[1].metric('Cancellation probability:', f'{probability_is_cancelled_plus_adr * 100:.0f}  %', '+20 $ daily rate')
             columns_7[2].metric('Cancellation probability:', f'{probability_is_cancelled_minus_adr * 100:.0f}  %', '-20 $ daily rate')
-            columns_7[1].metric('Cancellation probability:', f'{probability_is_cancelled_plus_baa * 100:.0f}  %', '+20 days lead time')
-            columns_7[2].metric('Cancellation probability:', f'{probability_is_cancelled_minus_baa * 100:.0f}  %', '-20 days lead time')
-
+            columns_7[1].metric('Cancellation probability:', f'{probability_is_cancelled_plus_lead_time * 100:.0f}  %', '+20 days lead time')
+            columns_7[2].metric('Cancellation probability:', f'{probability_is_cancelled_minus_lead_time * 100:.0f}  %', '-20 days lead time')
     else:
         params = {
             'country': country_code,
@@ -175,18 +167,77 @@ with tab1:
             'stays_in_week_nights': stays_in_week_nights,
             'INFLATION': INFLATION,
     }
+        params_adr_plus = {
+            'country': country_code,
+            'FUEL_PRCS':FUEL_PRCS,
+            'lead_time': lead_time,
+            'adr': adr_plus,
+            'arrival_date_month': month,
+            'stays_in_week_nights': stays_in_week_nights,
+            'INFLATION': INFLATION,
+    }
+        params_adr_minus = {
+            'country': country_code,
+            'FUEL_PRCS':FUEL_PRCS,
+            'lead_time': lead_time,
+            'adr': adr_minus,
+            'arrival_date_month': month,
+            'stays_in_week_nights': stays_in_week_nights,
+            'INFLATION': INFLATION,
+    }
+        params_lead_time_plus = {
+            'country': country_code,
+            'FUEL_PRCS':FUEL_PRCS,
+            'lead_time': lead_time_plus,
+            'adr': adr,
+            'arrival_date_month': month,
+            'stays_in_week_nights': stays_in_week_nights,
+            'INFLATION': INFLATION,
+    }
+        params_lead_time_minus = {
+            'country': country_code,
+            'FUEL_PRCS':FUEL_PRCS,
+            'lead_time': lead_time_minus,
+            'adr': adr,
+            'arrival_date_month': month,
+            'stays_in_week_nights': stays_in_week_nights,
+            'INFLATION': INFLATION,
+    }
         #Get api model prediction
         if st.button('Check cancellation probability'):
             with st.spinner('Building crazy AI magic...'):
                 response = requests.get(url, params=params)
-                if response.status_code == 200:
+                response_adr_plus = requests.get(url, params=params_adr_plus)
+                response_adr_minus = requests.get(url, params=params_adr_minus)
+                response_lead_time_plus = requests.get(url, params=params_lead_time_plus)
+                response_lead_time_minus = requests.get(url, params=params_lead_time_minus)
+                if (response.status_code and response_adr_plus.status_code) == 200:
                     probability_is_cancelled = response.json()['prediction probability']
-                    if probability_is_cancelled < 0.5:
-                        st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
-                    elif probability_is_cancelled < 0.8:
-                        st.write(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
-                    else:
-                        st.write(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                    probability_is_cancelled_adr_plus = response_adr_plus.json()['prediction probability']
+                    probability_is_cancelled_adr_minus = response_adr_minus.json()['prediction probability']
+                    probability_is_cancelled_lead_time_plus = response_lead_time_plus.json()['prediction probability']
+                    probability_is_cancelled_lead_time_minus = response_lead_time_minus.json()['prediction probability']
+                    st.markdown('''
+                        ######
+                        ''')
+                    average_cancellation = 0.2844
+                    st.markdown('''
+                        ##### Cancellation probability for booking data:
+                        ''')
+                    delta = probability_is_cancelled - average_cancellation
+                    change = 'higher' if delta > 0 else 'lower'
+                    st.metric('', f'{probability_is_cancelled * 100:.0f}  %', f'{(delta) * 100:.0f} % {change} than the average cancellation rate', delta_color="inverse", label_visibility="collapsed")
+                    st.markdown('''
+                        ######
+                        ''')
+                    st.markdown('''
+                        ##### Cancellation probabilities if the booking data were different:
+                        ''')
+                    columns_71 = st.columns(2)
+                    columns_71[0].metric('If the daily rate were 20 $ higher:', f'{probability_is_cancelled_adr_plus * 100:.0f}  %', f'{(probability_is_cancelled_adr_plus - probability_is_cancelled) * 100:.0f} % change', delta_color="inverse")
+                    columns_71[1].metric('If the daily rate were 20 $ lower:', f'{probability_is_cancelled_adr_minus * 100:.0f}  %', f'{(probability_is_cancelled_adr_minus - probability_is_cancelled) * 100:.0f} % change', delta_color="inverse")
+                    columns_71[0].metric('If the customers booked 20 days earlier:', f'{probability_is_cancelled_lead_time_plus * 100:.0f}  %', f'{(probability_is_cancelled_lead_time_plus - probability_is_cancelled) * 100:.0f} % change', delta_color="inverse")
+                    columns_71[1].metric('If the customers booked 20 days later:', f'{probability_is_cancelled_lead_time_minus * 100:.0f}  %', f'{(probability_is_cancelled_lead_time_minus - probability_is_cancelled) * 100:.0f} % change', delta_color="inverse")
                 else:
                     st.write('Error in API call')
 
@@ -264,7 +315,6 @@ with tab2:
         }
 
         #Get api model prediction
-
         if st.button('Check target country'):
             with st.spinner('Building crazy AI magic...'):
                 response = requests.get(url, params=params)
