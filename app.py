@@ -250,9 +250,22 @@ with tab2:
     #Input
     #Columns
     columns_5 = st.columns(2)
+    #hotel
+    dict_of_hotels_c = {
+        1: 'City Hotel',
+        0: 'Resort Hotel'
+        }
+    hotel_names_c = dict_of_hotels_c.values()
+    hotel_name_c = columns_5[0].selectbox('Hotel:', hotel_names_c)
+    hotel_c = ([key for key, value in dict_of_hotels_c.items() if value == hotel_name_c][0])
+    #Columns
+    columns_51 = st.columns(2)
+    #adults
+    number_of_adults_c = [1,2,3]
+    adults_c = columns_51[0].selectbox('Number of adults:', number_of_adults_c)
     #adr
         #Range with toggle bar
-    adr_c = columns_5[0].slider('Potential average daily rate ($):', 0, 1000, 100)
+    adr_c = columns_51[1].slider('Potential average daily rate ($):', 0, 1000, 100)
     #Month
     months_c = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_c = columns_5[1].selectbox('Potential month of arrival:', months_c)
@@ -264,6 +277,10 @@ with tab2:
     #stays_in_week_nights
         #range with toggle bar
     stays_in_week_nights_c = columns_6[1].slider('Potential number of weekday nights:', 0, 50, 3)
+    #INFLATION
+        #Range with toggle bar
+    INFLATION_c = st.slider('Current inflation:', 1.6, 2.3, 2.0)
+
 
     dict_of_countries_c = {
         'PRT': 'Portugal', 'GBR': 'Great Britain', 'USA': 'United States', 'ESP': 'Spain', 'IRL': 'Ireland',
@@ -312,6 +329,11 @@ with tab2:
             'arrival_date_month': month_c,
             'lead_time': lead_time_c,
             'stays_in_week_nights': stays_in_week_nights_c,
+            'adults': adults_c,
+            'hotel': hotel_c,
+            'INFLATION': INFLATION_c,
+            # 'ALL FEATURES': all_features,
+
         }
 
         #Get api model prediction
