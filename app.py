@@ -676,7 +676,7 @@ with tab3:
         0: 'Resort Hotel'
         }
     hotel_names_a = dict_of_hotels_a.values()
-    hotel_name_a = columns_a1[0].selectbox('Hotel:', hotel_names_a, key='Hotel_a')
+    hotel_name_a = columns_a1[0].selectbox('Hotel name:', hotel_names_a, key='Hotel_a')
     hotel_a = ([key for key, value in dict_of_hotels_a.items() if value == hotel_name_a][0])
     #Month
     months_a = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
