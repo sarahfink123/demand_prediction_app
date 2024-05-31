@@ -56,7 +56,10 @@ with tab1:
                 ''')
     #adr
         #Range with toggle bar
-    adr = st.slider('Average daily rate ($):', 0, 1000, 100)
+    adr = st.slider('Average daily rate in US $: (The average daily rate for bookings is 108.)', 0, 1000, 108)
+    # st.markdown('''
+    #             <p style="font-size:12px;">The average daily rate for bookings is 108 $.</p>
+    #             ''', unsafe_allow_html=True)
     #Columns
     columns_1 = st.columns(2)
     #country
@@ -92,13 +95,13 @@ with tab1:
     country_code = ([key for key, value in dict_of_countries.items() if value == country_name][0])
     #arrival_date_month
         #Select from drop down
-    months = [1,2,3,4,5,6,7,8,9,10,11,12]
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month = columns_1[1].selectbox('Month of arrival:', months)
     #Columns
     columns_2 = st.columns(2)
     #lead_time
         #Range with toggle bar
-    lead_time = columns_2[0].slider('Days between time of booking and arrival:', 1, 100, 30)
+    lead_time = columns_2[0].slider('Days between time of booking and arrival: (The average delta between booking and arrival is 80 days.)', 1, 100, 30)
     #stays_in_week_nights
         #range with toggle bar
     stays_in_week_nights = columns_2[1].slider('Booked weekday nights:', 0, 50, 3)
@@ -106,29 +109,61 @@ with tab1:
     columns_3 = st.columns(2)
     #FUEL_PRCS
         #Range with toggle bar
-    FUEL_PRCS = columns_3[0].slider('Current fuel price:', 113, 204, 150)
+    FUEL_PRCS = columns_3[0].slider('Current fuel price in US $: (The average fuel price at the time of bookings is 157.)', 113, 204, 157)
     #INFLATION
         #Range with toggle bar
-    INFLATION = columns_3[1].slider('Current inflation:', 1.6, 2.3, 2.0)
+    INFLATION = columns_3[1].slider('Current inflation: (The average inflation rate at the time of bookings is 2.04.)', 1.6, 2.3, 2.0)
 
 
-    url = ''
+    url = 'https://demand-prediction-g6vy2lia4a-ew.a.run.app/predict?'
 
     if url == '':
         #Dummy prediction
         #Prediction needs to be given out as probability_is_cancelled and stored accordingly.
         if st.button('Check cancellation probability (dummy)'):
-            if month > 9:
+            if month in ['October', 'November', 'December']:
                 probability_is_cancelled = 0.8
-            elif month > 5:
+            elif month in ['June', 'July', 'August', 'September']:
                 probability_is_cancelled = 0.6
-            else: probability_is_cancelled = 0.3
-            if probability_is_cancelled < 0.5:
-                st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
-            elif probability_is_cancelled < 0.8:
-                st.write(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
             else:
-                st.write(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                probability_is_cancelled = 0.3
+            if month in ['October', 'November', 'December']:
+                probability_is_cancelled_plus_adr = 0.9
+            elif month in ['June', 'July', 'August', 'September']:
+                probability_is_cancelled_plus_adr = 0.7
+            else:
+                probability_is_cancelled_plus_adr = 0.4
+            if month in ['October', 'November', 'December']:
+                probability_is_cancelled_minus_adr = 0.7
+            elif month in ['June', 'July', 'August', 'September']:
+                probability_is_cancelled_minus_adr = 0.5
+            else:
+                probability_is_cancelled_minus_adr = 0.2
+            if month in ['October', 'November', 'December']:
+                probability_is_cancelled_plus_baa = 0.87
+            elif month in ['June', 'July', 'August', 'September']:
+                probability_is_cancelled_plus_baa = 0.73
+            else:
+                probability_is_cancelled_plus_baa = 0.53
+            if month in ['October', 'November', 'December']:
+                probability_is_cancelled_minus_baa = 0.67
+            elif month in ['June', 'July', 'August', 'September']:
+                probability_is_cancelled_minus_baa = 0.37
+            else:
+                probability_is_cancelled_minus_baa = 0.23
+            st.markdown('''
+                ######
+                ''')
+            st.markdown('''
+                ##### Cancellation probabilities
+                ''')
+            columns_7 = st.columns(3)
+            columns_7[0].metric('Cancellation probability:', f'{probability_is_cancelled * 100:.0f}  %', 'current booking')
+            columns_7[1].metric('Cancellation probability:', f'{probability_is_cancelled_plus_adr * 100:.0f}  %', '+20 $ daily rate')
+            columns_7[2].metric('Cancellation probability:', f'{probability_is_cancelled_minus_adr * 100:.0f}  %', '-20 $ daily rate')
+            columns_7[1].metric('Cancellation probability:', f'{probability_is_cancelled_plus_baa * 100:.0f}  %', '+20 days lead time')
+            columns_7[2].metric('Cancellation probability:', f'{probability_is_cancelled_minus_baa * 100:.0f}  %', '-20 days lead time')
+
     else:
         params = {
             'country': country_code,
@@ -143,7 +178,7 @@ with tab1:
         if st.button('Check cancellation probability'):
             response = requests.get(url, params=params)
             if response.status_code == 200:
-                probability_is_cancelled = response.json()['OUTPUT_CANCELLATION']
+                probability_is_cancelled = response.json()['prediction probability']
                 if probability_is_cancelled < 0.5:
                     st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
                 elif probability_is_cancelled < 0.8:
@@ -166,7 +201,7 @@ with tab2:
         #Range with toggle bar
     adr_c = columns_5[0].slider('Potential average daily rate ($):', 0, 1000, 100)
     #Month
-    months_c = [1,2,3,4,5,6,7,8,9,10,11,12]
+    months_c = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_c = columns_5[1].selectbox('Potential month of arrival:', months_c)
         #Columns
     columns_6 = st.columns(2)
@@ -210,9 +245,9 @@ with tab2:
         #Dummy prediction
         #Prediction needs to give out country_code_c and that will be stored as country_code.
         if st.button('Check target country (dummy)'):
-            if month_c > 9:
+            if month_c in ['October', 'November', 'December']:
                 country_code_c = 'PRT'
-            elif month_c > 5:
+            elif month_c in ['June', 'July', 'August', 'September']:
                 country_code_c = 'KNA'
             else: country_code_c = 'GHA'
             #Get dummy prediction
