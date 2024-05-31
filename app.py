@@ -656,7 +656,7 @@ with tab3:
                 else:
                     st.write('Error in API call')
 
-with tab4:
+# with tab4:
     # #Intro
     # st.markdown('''
     # The average daily rate predictor tells you at which average daily rate customers usually book. To predict the average daily rate for certain booking data, please insert the booking parameters of the booking.
