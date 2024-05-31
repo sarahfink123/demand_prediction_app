@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import os
+import time
 
 st.set_page_config(
         page_title="Demand predictor",
@@ -176,17 +177,18 @@ with tab1:
     }
         #Get api model prediction
         if st.button('Check cancellation probability'):
-            response = requests.get(url, params=params)
-            if response.status_code == 200:
-                probability_is_cancelled = response.json()['prediction probability']
-                if probability_is_cancelled < 0.5:
-                    st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
-                elif probability_is_cancelled < 0.8:
-                    st.write(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+            with st.spinner('Building crazy AI magic...'):
+                response = requests.get(url, params=params)
+                if response.status_code == 200:
+                    probability_is_cancelled = response.json()['prediction probability']
+                    if probability_is_cancelled < 0.5:
+                        st.write(f'Congrats! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                    elif probability_is_cancelled < 0.8:
+                        st.write(f'Watch out! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
+                    else:
+                        st.write(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
                 else:
-                    st.write(f'Oh no! The cancellation probability for this booking is {probability_is_cancelled * 100:.0f} %')
-            else:
-                st.write('Error in API call')
+                    st.write('Error in API call')
 
 
 with tab2:
@@ -264,10 +266,11 @@ with tab2:
         #Get api model prediction
 
         if st.button('Check target country'):
-            response = requests.get(url, params=params)
-            if response.status_code == 200:
-                country_code_c = response.json()['OUTPUT']
-                country_pred = dict_of_countries_c[country_code_c]
-                st.write(f'Your potential bookings will most likely be done by people from {country_pred}.')
-            else:
-                st.write('Error in API call')
+            with st.spinner('Building crazy AI magic...'):
+                response = requests.get(url, params=params)
+                if response.status_code == 200:
+                    country_code_c = response.json()['OUTPUT']
+                    country_pred = dict_of_countries_c[country_code_c]
+                    st.write(f'Your potential bookings will most likely be done by people from {country_pred}.')
+                else:
+                    st.write('Error in API call')
