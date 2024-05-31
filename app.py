@@ -98,7 +98,7 @@ tab1, tab2, tab3, tab4 = st.tabs(['Cancellation', 'Target country', 'Average dai
 #     lead_time_minus = lead_time - 20
 #     #number of stays in nights
 #         #range with toggle bar
-#     total_stay = columns_2[1].slider('Booked nights:', 0, 56, 3)
+#     total_stay = columns_2[1].slider('Booked nights:', 0, 57, 3)
 #     #Columns
 #     columns_3 = st.columns(2)
 #     #FUEL_PRCS
@@ -489,7 +489,7 @@ with tab2:
     lead_time_c = columns_6[0].slider('Days until potential arrival:', 1, 100, 30)
     #number of stays in nights
         #range with toggle bar
-    total_stay_c = columns_6[1].slider('Potential number of nights:', 0, 56, 3)
+    total_stay_c = columns_6[1].slider('Potential number of nights:', 0, 57, 3)
     #INFLATION
         #Range with toggle bar
     INFLATION_c = st.slider('Current inflation:', 1.6, 2.3, 2.0)
@@ -596,7 +596,7 @@ with tab3:
     lead_time_a = columns_a2[1].slider('Days until potential arrival:', 1, 100, 30, key='lead_time_a')
     #number of stays in nights
         #range with toggle bar
-    total_stay_a = columns_a3[0].slider('Potential number of nights:', 0, 56, 3, key='total_stay_a')
+    total_stay_a = columns_a3[0].slider('Potential number of nights:', 0, 57, 3, key='total_stay_a')
     #INFLATION
         #Range with toggle bar
     INFLATION_a = columns_a3[1].slider('Current inflation:', 1.6, 2.3, 2.0, key='INFLATION_a')
@@ -632,7 +632,7 @@ with tab3:
             'lead_time': lead_time,
             'adr': adr,
             'arrival_date_month': month,
-            'total_stay': total_stay,
+            # 'total_stay': total_stay,
             'INFLATION': INFLATION,
             'ALLE FEATURES': adr,
     }
@@ -656,98 +656,82 @@ with tab3:
                 else:
                     st.write('Error in API call')
 
-# with tab4:
-    # #Intro
-    # st.markdown('''
-    # The average daily rate predictor tells you at which average daily rate customers usually book. To predict the average daily rate for certain booking data, please insert the booking parameters of the booking.
-    #             ''')
-    # st.markdown('''
-    # ######
-    #             ''')
+with tab4:
+    #Intro
+    st.markdown('''
+    The meal predictor tells you which meal options customers will probably book. To predict the meal type for certain booking data, please insert the booking parameters of the booking.
+                ''')
+    st.markdown('''
+    ######
+                ''')
 
-    # #Input
-    # st.markdown('''
-    # ##### Insert booking data:
-    #             ''')
-    # columns_a1 = st.columns(2)
-    # #hotel
-    # dict_of_hotels_a = {
-    #     1: 'City Hotel',
-    #     0: 'Resort Hotel'
-    #     }
-    # hotel_names_a = dict_of_hotels_a.values()
-    # hotel_name_a = columns_a1[0].selectbox('Hotel name:', hotel_names_a, key='Hotel_a')
-    # hotel_a = ([key for key, value in dict_of_hotels_a.items() if value == hotel_name_a][0])
-    # #Month
-    # months_a = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    # month_a = columns_a1[1].selectbox('Potential month of arrival:', months_a, key='month_a')
-    # columns_a2 = st.columns(2)
-    # #Number of adults
-    # number_of_adults_a = [1,2,3]
-    # adults_a = columns_a2[0].selectbox('Number of adults:', number_of_adults_a, key='adults_a')
-    # #
-    # columns_a3 = st.columns(2)
-    # #lead_time
-    #     #Range with toggle bar
-    # lead_time_a = columns_a2[1].slider('Days until potential arrival:', 1, 100, 30, key='lead_time_a')
-    # #number of stays in nights
-    #     #range with toggle bar
-    # total_stay_a = columns_a3[0].slider('Potential number of nights:', 0, 56, 3, key='total_stay_a')
-    # #INFLATION
-    #     #Range with toggle bar
-    # INFLATION_a = columns_a3[1].slider('Current inflation:', 1.6, 2.3, 2.0, key='INFLATION_a')
+    #Input
+    st.markdown('''
+    ##### Insert booking data:
+                ''')
+    #Column
+    columns_m1 = st.columns(2)
+    #Hotel
+    dict_of_hotels_m = {
+        1: 'City Hotel',
+        0: 'Resort Hotel'
+        }
+    hotel_names_m = dict_of_hotels_m.values()
+    hotel_name_m = columns_m1[0].selectbox('Hotel:', hotel_names_m, key='Hotel_m')
+    hotel_m = ([key for key, value in dict_of_hotels_m.items() if value == hotel_name_m][0])
+    #Months
+    months_m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    month_m = columns_m1[1].selectbox('Potential month of arrival:', months_m, key='month_m')
+    #Columns
+    columns_m2 = st.columns(2)
+    #Number of adults
+    number_of_adults_m = [1,2,3]
+    adults_m = columns_m2[0].selectbox('Number of adults:', number_of_adults_m, key='adults_m')
+    #number of stays in nights
+        #range with toggle bar
+    total_stay_m = columns_m2[1].slider('Potential number of nights:', 0, 57, 3, key='total_stay_m')
+    #lead_time
+        #Range with toggle bar
+    lead_time_m = st.slider('Days until potential arrival:', 1, 100, 30, key='lead_time_m')
 
 
-    # url_a = ''
+    url_m = ''
 
-    # if url_a == '':
-    #     #Dummy prediction
-    #     #Prediction needs to be given out as average_daily_rate and stored accordingly.
-    #     if st.button('Check average daily rate (dummy)'):
-    #         if month in ['October', 'November', 'December']:
-    #             average_daily_rate_a = 200
-    #         elif month in ['June', 'July', 'August', 'September']:
-    #             average_daily_rate_a = 140
-    #         else:
-    #             average_daily_rate_a = 70
-    #         st.markdown('''
-    #             ######
-    #             ''')
-    #         mean_average_daily_rate_a = 107.86
-    #         st.markdown('''
-    #             ##### Average daily rate:
-    #             ''')
-    #         delta_a = average_daily_rate_a - mean_average_daily_rate_a
-    #         change_a = 'higher' if delta_a > 0 else 'lower'
-    #         st.metric('', f'{average_daily_rate_a}  US $', f'{delta_a} % {change_a} than the mean average daily rate', label_visibility="collapsed")
+    if url_m == '':
+        #Dummy prediction
+        #Prediction needs to be given out as average_daily_rate and stored accordingly.
+        if st.button('Check meal type (dummy)'):
+            if month in ['October', 'November', 'December']:
+                meal_m = 'HB'
+            elif month in ['June', 'July', 'August', 'September']:
+                meal_m = 'FB'
+            else:
+                meal_m = 'BB'
+            st.markdown('''
+                ######
+                ''')
+            st.markdown('''
+                ##### Probable meal type:
+                ''')
+            st.metric('', f'{meal_m}', label_visibility="collapsed")
 
-    # else:
-    #     params_a = {
-    #         'country': country_code,
-    #         'FUEL_PRCS':FUEL_PRCS,
-    #         'lead_time': lead_time,
-    #         'adr': adr,
-    #         'arrival_date_month': month,
-    #         'total_stay': total_stay,
-    #         'INFLATION': INFLATION,
-    #         'ALLE FEATURES': adr,
-    # }
+    else:
+        params_m = {
+            'lead_time': lead_time_m
+    }
 
-    #     #Get api model prediction
-    #     if st.button('Check average daily rate'):
-    #         with st.spinner('Building crazy AI magic...'):
-    #             response_a = requests.get(url_a, params_a=params_a)
-    #             if (response_a.status_code) == 200:
-    #                 average_daily_rate = response_a.json()['adr']
-    #                 st.markdown('''
-    #                     ######
-    #                     ''')
-    #                 mean_average_daily_rate = 107.86
-    #                 st.markdown('''
-    #                     ##### Average daily rate:
-    #                     ''')
-    #                 delta_a = average_daily_rate - mean_average_daily_rate
-    #                 change_A = 'higher' if delta > 0 else 'lower'
-    #                 st.metric('', f'{average_daily_rate * 100:.0f}  US $', f'{(delta_a) * 100:.0f} % {change_A} than the mean average daily rate', label_visibility="collapsed")
-    #             else:
-    #                 st.write('Error in API call')
+        # #Get api model prediction
+        # if st.button('Check average daily rate'):
+        #     with st.spinner('Building crazy AI magic...'):
+        #         response_m = requests.get(url_m, params_m=params_m)
+        #         if (response_m.status_code) == 200:
+        #             meal_m = response_m.json()['adr']
+        #             st.markdown('''
+        #                 ######
+        #                 ''')
+        #             st.markdown('''
+        #                 ##### Average daily rate:
+        #                 ''')
+        #             st.metric('', f'{meal * 100:.0f}  US $', f'{(delta_a) * 100:.0f} % {change_A} than the mean average daily rate', label_visibility="collapsed")
+        #         else:
+        #             st.write('Error in API call')
