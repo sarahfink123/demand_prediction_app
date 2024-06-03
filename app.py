@@ -3,6 +3,9 @@ import pandas as pd
 import requests
 import os
 import time
+import asyncio
+from concurrent.futures import ProcessPoolExecutor
+
 
 st.set_page_config(
         page_title="Demand predictor",
@@ -27,6 +30,10 @@ css_path = os.path.join('..', 'demand_prediction_app', 'style.css')
 with open(css_path) as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+async def async_request(url, params):
+    loop = asyncio.get_event_loop()
+    response = await loop.run_in_executor(None, lambda: requests.get(url, params=params))
+    return response.json()
 
 #Title
 '''
@@ -412,17 +419,23 @@ with tab1:
         #Get api model prediction
         if st.button('Check cancellation probability'):
             with st.spinner('Building crazy AI magic...'):
-                response = requests.get(url, params=params)
-                response_adr_plus = requests.get(url, params=params_adr_plus)
-                response_adr_minus = requests.get(url, params=params_adr_minus)
-                response_lead_time_plus = requests.get(url, params=params_lead_time_plus)
-                response_lead_time_minus = requests.get(url, params=params_lead_time_minus)
-                if (response.status_code and response_adr_plus.status_code) == 200:
-                    probability_is_cancelled = response.json()['prediction probability']
-                    probability_is_cancelled_adr_plus = response_adr_plus.json()['prediction probability']
-                    probability_is_cancelled_adr_minus = response_adr_minus.json()['prediction probability']
-                    probability_is_cancelled_lead_time_plus = response_lead_time_plus.json()['prediction probability']
-                    probability_is_cancelled_lead_time_minus = response_lead_time_minus.json()['prediction probability']
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                tasks = [
+                    async_request(url, params),
+                    async_request(url, params_adr_plus),
+                    async_request(url, params_adr_minus),
+                    async_request(url, params_lead_time_plus),
+                    async_request(url, params_lead_time_minus)
+                ]
+                responses = loop.run_until_complete(asyncio.gather(*tasks))
+                response, response_adr_plus, response_adr_minus, response_lead_time_plus, response_lead_time_minus = responses
+                if all([response, response_adr_plus, response_adr_minus, response_lead_time_plus, response_lead_time_minus]):
+                    probability_is_cancelled = response['prediction probability']
+                    probability_is_cancelled_adr_plus = response_adr_plus['prediction probability']
+                    probability_is_cancelled_adr_minus = response_adr_minus['prediction probability']
+                    probability_is_cancelled_lead_time_plus = response_lead_time_plus['prediction probability']
+                    probability_is_cancelled_lead_time_minus = response_lead_time_minus['prediction probability']
                     st.markdown('''
                         ######
                         ''')
