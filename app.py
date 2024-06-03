@@ -81,7 +81,7 @@ with tab1:
     columns_2 = st.columns(2)
     #lead_time
         #Range with toggle bar
-    lead_time = columns_2[0].slider('Days between time of booking and arrival: (The average delta between booking and arrival is 80 days.)', 1, 100, 30)
+    lead_time = columns_2[0].slider('Days between time of booking and arrival: (The average delta between booking and arrival is 80 days.)', 1, 100, 80)
     lead_time_plus = lead_time + 20
     lead_time_minus = lead_time - 20
     #number of stays in nights
@@ -280,7 +280,7 @@ with tab2:
     columns_6 = st.columns(2)
     #lead_time
         #Range with toggle bar
-    lead_time_c = columns_6[0].slider('Days until potential arrival:', 1, 100, 30)
+    lead_time_c = columns_6[0].slider('Days until potential arrival:', 1, 100, 80)
     #number of stays in nights
         #range with toggle bar
     total_stay_c = columns_6[1].slider('Potential number of nights:', 0, 57, 3)
@@ -410,7 +410,7 @@ with tab3:
     columns_a3 = st.columns(2)
     #lead_time
         #Range with toggle bar
-    lead_time_a = columns_a2[1].slider('Days until potential arrival:', 1, 100, 30, key='lead_time_a')
+    lead_time_a = columns_a2[1].slider('Days until potential arrival:', 1, 100, 80, key='lead_time_a')
     lead_time_a_plus = lead_time + 20
     lead_time_a_minus = lead_time - 20
     #number of stays in nights
@@ -597,7 +597,7 @@ with tab4:
     total_stay_m = columns_m2[1].slider('Potential number of nights:', 0, 57, 3, key='total_stay_m')
     #lead_time
         #Range with toggle bar
-    lead_time_m = st.slider('Days until potential arrival:', 1, 100, 30, key='lead_time_m')
+    lead_time_m = st.slider('Days until potential arrival:', 1, 100, 80, key='lead_time_m')
 
     meal_m_dict = {
         'BB': 'Bed and Breakfast',
