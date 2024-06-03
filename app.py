@@ -109,33 +109,21 @@ with tab1:
         if st.button('Check cancellation probability (dummy)'):
             if month in ['October', 'November', 'December']:
                 probability_is_cancelled = 0.8
-            elif month in ['June', 'July', 'August', 'September']:
-                probability_is_cancelled = 0.6
-            else:
-                probability_is_cancelled = 0.3
-            if month in ['October', 'November', 'December']:
                 probability_is_cancelled_plus_adr = 0.9
-            elif month in ['June', 'July', 'August', 'September']:
-                probability_is_cancelled_plus_adr = 0.7
-            else:
-                probability_is_cancelled_plus_adr = 0.4
-            if month in ['October', 'November', 'December']:
                 probability_is_cancelled_minus_adr = 0.7
-            elif month in ['June', 'July', 'August', 'September']:
-                probability_is_cancelled_minus_adr = 0.5
-            else:
-                probability_is_cancelled_minus_adr = 0.2
-            if month in ['October', 'November', 'December']:
                 probability_is_cancelled_plus_lead_time = 0.87
-            elif month in ['June', 'July', 'August', 'September']:
-                probability_is_cancelled_plus_lead_time = 0.73
-            else:
-                probability_is_cancelled_plus_lead_time = 0.53
-            if month in ['October', 'November', 'December']:
                 probability_is_cancelled_minus_lead_time = 0.67
             elif month in ['June', 'July', 'August', 'September']:
+                probability_is_cancelled = 0.6
+                probability_is_cancelled_plus_adr = 0.7
+                probability_is_cancelled_minus_adr = 0.5
+                probability_is_cancelled_plus_lead_time = 0.73
                 probability_is_cancelled_minus_lead_time = 0.37
             else:
+                probability_is_cancelled = 0.3
+                probability_is_cancelled_plus_adr = 0.4
+                probability_is_cancelled_minus_adr = 0.2
+                probability_is_cancelled_plus_lead_time = 0.53
                 probability_is_cancelled_minus_lead_time = 0.23
             st.markdown('''
                 ######
@@ -284,7 +272,7 @@ with tab2:
     adults_c = columns_51[0].selectbox('Number of adults:', number_of_adults_c)
     #adr
         #Range with toggle bar
-    adr_c = columns_51[1].slider('Potential average daily rate ($):', 0, 1000, 100)
+    adr_c = columns_51[1].slider('Potential average daily rate ($):', 0, 1000, 108)
     #Month
     months_c = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_c = columns_5[1].selectbox('Potential month of arrival:', months_c)
@@ -372,7 +360,11 @@ with tab2:
                 if response.status_code == 200:
                     country_code_c = response.json()['OUTPUT']
                     country_pred = dict_of_countries_c[country_code_c]
-                    st.write(f'Your potential bookings will most likely be done by people from {country_pred}.')
+                    st.metric(f'Your potential bookings will most likely be done by people from:', country_pred)
+                    lat, lon = get_country_coordinates(country_pred)
+                    map = folium.Map(location=[lat, lon], zoom_start=2)
+                    folium.Marker([lat, lon], tooltip=country_pred).add_to(map)
+                    folium_static(map)
                 else:
                     st.write('Error in API call')
 
@@ -402,15 +394,25 @@ with tab3:
     #Month
     months_a = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_a = columns_a1[1].selectbox('Potential month of arrival:', months_a, key='month_a')
+    month_index = months_a.index(month_a)
+    month_a_plus_index = (month_index + 1) % len(months_a)
+    month_a_minus_index = (month_index - 1) % len(months_a)
+    month_a_plus = months_a[month_a_plus_index] if month_a_plus_index != 0 else 'January'
+    month_a_minus = months_a[month_a_minus_index] if month_a_minus_index != 11 else 'December'
+    month_a_plus_name = months_a[month_a_plus_index] if month_a_plus_index != 0 else 'January'
+    month_a_minus_name = months_a[month_a_minus_index] if month_a_minus_index != 11 else 'December'
+    #Columns
     columns_a2 = st.columns(2)
     #Number of adults
     number_of_adults_a = [1,2,3]
     adults_a = columns_a2[0].selectbox('Number of adults:', number_of_adults_a, key='adults_a')
-    #
+    #Columns
     columns_a3 = st.columns(2)
     #lead_time
         #Range with toggle bar
     lead_time_a = columns_a2[1].slider('Days until potential arrival:', 1, 100, 30, key='lead_time_a')
+    lead_time_a_plus = lead_time + 20
+    lead_time_a_minus = lead_time - 20
     #number of stays in nights
         #range with toggle bar
     total_stay_a = columns_a3[0].slider('Potential number of nights:', 0, 57, 3, key='total_stay_a')
@@ -421,16 +423,30 @@ with tab3:
 
     url_a = ''
 
+    #adr beeinflusst bei lead time
+
     if url_a == '':
         #Dummy prediction
         #Prediction needs to be given out as average_daily_rate and stored accordingly.
         if st.button('Check average daily rate (dummy)'):
             if month in ['October', 'November', 'December']:
                 average_daily_rate_a = 200
+                average_daily_rate_a_plus_lead_time = 213
+                average_daily_rate_a_minus_lead_time = 180
+                average_daily_rate_a_plus_month = 232
+                average_daily_rate_a_minus_month = 170
             elif month in ['June', 'July', 'August', 'September']:
                 average_daily_rate_a = 140
+                average_daily_rate_a_plus_lead_time = 183
+                average_daily_rate_a_minus_lead_time = 120
+                average_daily_rate_a_plus_month = 192
+                average_daily_rate_a_minus_month = 70
             else:
                 average_daily_rate_a = 70
+                average_daily_rate_a_plus_lead_time = 83
+                average_daily_rate_a_minus_lead_time = 60
+                average_daily_rate_a_plus_month = 92
+                average_daily_rate_a_minus_month = 30
             st.markdown('''
                 ######
                 ''')
@@ -441,35 +457,107 @@ with tab3:
             delta_a = average_daily_rate_a - mean_average_daily_rate_a
             change_a = 'higher' if delta_a > 0 else 'lower'
             st.metric('', f'{average_daily_rate_a}  US $', f'{delta_a} % {change_a} than the mean average daily rate', label_visibility="collapsed")
+            st.markdown('''
+            ######
+            ''')
+            st.markdown('''
+            ##### Average daily rate if the booking data were different:
+            ''')
+            columns_82 = st.columns(2)
+            columns_82[0].metric('If the customers booked 20 days earlier:', f'{average_daily_rate_a_plus_lead_time}  US $', f'{(average_daily_rate_a_plus_lead_time - average_daily_rate_a)} % change')
+            columns_82[1].metric('If the customers booked 20 days later:', f'{average_daily_rate_a_minus_lead_time}  US $', f'{(average_daily_rate_a_minus_lead_time - average_daily_rate_a)} % change')
+            columns_82[0].metric(f'If the customer booked for {month_a_plus_name}:', f'{average_daily_rate_a_plus_month}  US $', f'{(average_daily_rate_a_plus_month - average_daily_rate_a)} % change')
+            columns_82[1].metric(f'If the customers booked for {month_a_minus_name}:', f'{average_daily_rate_a_minus_month}  US $', f'{(average_daily_rate_a_minus_month - average_daily_rate_a)} % change')
 
     else:
         params_a = {
-            'country': country_code,
-            'FUEL_PRCS':FUEL_PRCS,
-            'lead_time': lead_time,
-            'adr': adr,
-            'arrival_date_month': month,
-            # 'total_stay': total_stay,
-            'INFLATION': INFLATION,
+            'hotel': hotel_a,
+            'month': month_a,
+            'adults': adults_a,
+            'lead_time': lead_time_a,
+            'total_stay': total_stay_a,
+            'INFLATION': INFLATION_a,
             'ALLE FEATURES': adr,
     }
+        params_a_lead_time_plus = {
+            'hotel': hotel_a,
+            'month': month_a,
+            'adults': adults_a,
+            'lead_time': lead_time_a_plus,
+            'total_stay': total_stay_a,
+            'INFLATION': INFLATION_a,
+            'ALLE FEATURES': adr,
+    }
+        params_a_lead_time_minus = {
+            'hotel': hotel_a,
+            'month': month_a,
+            'adults': adults_a,
+            'lead_time': lead_time_a_minus,
+            'total_stay': total_stay_a,
+            'INFLATION': INFLATION_a,
+            'ALLE FEATURES': adr,
+    }
+        params_a_month_plus = {
+            'hotel': hotel_a,
+            'month': month_a_plus,
+            'adults': adults_a,
+            'lead_time': lead_time_a,
+            'total_stay': total_stay_a,
+            'INFLATION': INFLATION_a,
+            'ALLE FEATURES': adr,
+    }
+        params_a_month_minus = {
+            'hotel': hotel_a,
+            'month': month_a_minus,
+            'adults': adults_a,
+            'lead_time': lead_time_a,
+            'total_stay': total_stay_a,
+            'INFLATION': INFLATION_a,
+            'ALLE FEATURES': adr,
+    }
+
 
         #Get api model prediction
         if st.button('Check average daily rate'):
             with st.spinner('Building crazy AI magic...'):
-                response_a = requests.get(url_a, params_a=params_a)
-                if (response_a.status_code) == 200:
-                    average_daily_rate = response_a.json()['adr']
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                tasks_a = [
+                    async_request(url_a, params_a),
+                    async_request(url_a, params_a_lead_time_plus),
+                    async_request(url_a, params_a_lead_time_minus),
+                    async_request(url_a, params_a_month_plus),
+                    async_request(url_a, params_a_month_minus)
+                ]
+                responses_a = loop.run_until_complete(asyncio.gather(*tasks_a))
+                response_a, response_a_lead_time_plus, response_a_lead_time_minus, response_a_month_plus, response_a_month_minus = responses_a
+                if all([response_a, response_a_lead_time_plus, response_a_lead_time_minus, response_a_month_plus, response_a_month_minus]):
+                    average_daily_rate_a = response_a['prediction probability']
+                    average_daily_rate_a_plus_lead_time = response_a_lead_time_plus['prediction probability']
+                    average_daily_rate_a_minus_lead_time = response_a_lead_time_minus['prediction probability']
+                    average_daily_rate_a_plus_month = response_a_month_plus['prediction probability']
+                    average_daily_rate_a_minus_month = response_a_month_minus['prediction probability']
                     st.markdown('''
-                        ######
-                        ''')
-                    mean_average_daily_rate = 107.86
+                    ######
+                    ''')
+                    mean_average_daily_rate_a = 107.86
                     st.markdown('''
                         ##### Average daily rate:
                         ''')
-                    delta_a = average_daily_rate - mean_average_daily_rate
-                    change_A = 'higher' if delta > 0 else 'lower'
-                    st.metric('', f'{average_daily_rate * 100:.0f}  US $', f'{(delta_a) * 100:.0f} % {change_A} than the mean average daily rate', label_visibility="collapsed")
+                    delta_a = average_daily_rate_a - mean_average_daily_rate_a
+                    change_a = 'higher' if delta_a > 0 else 'lower'
+                    st.metric('', f'{average_daily_rate_a}  US $', f'{delta_a} % {change_a} than the mean average daily rate', label_visibility="collapsed")
+                    st.markdown('''
+                    ######
+                    ''')
+                    st.markdown('''
+                    ##### Average daily rate if the booking data were different:
+                    ''')
+                    columns_82 = st.columns(2)
+                    columns_82[0].metric('If the customers booked 20 days earlier:', f'{average_daily_rate_a_plus_lead_time}  US $', f'{(average_daily_rate_a_plus_lead_time - average_daily_rate_a)} % change')
+                    columns_82[1].metric('If the customers booked 20 days later:', f'{average_daily_rate_a_minus_lead_time}  US $', f'{(average_daily_rate_a_minus_lead_time - average_daily_rate_a)} % change')
+                    columns_82[0].metric(f'If the customer booked for {month_a_plus_name}:', f'{average_daily_rate_a_plus_month}  US $', f'{(average_daily_rate_a_plus_month - average_daily_rate_a)} % change')
+                    columns_82[1].metric(f'If the customers booked for {month_a_minus_name}:', f'{average_daily_rate_a_minus_month}  US $', f'{(average_daily_rate_a_minus_month - average_daily_rate_a)} % change')
                 else:
                     st.write('Error in API call')
 
