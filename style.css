@@ -28,7 +28,6 @@ p {
 }
 
 .stTabs [data-baseweb='tab-list'] {
-  /* padding-bottom: 8px; */
   background-color: #20365e;
 }
 
@@ -39,6 +38,9 @@ p {
 .stTabs [data-baseweb='tab-panel'] {
   padding-top: 15px;
   /* background-color: #ffffff; */
+}
+div [data-testid="stMarkdownContainer"] p {
+  font-size: 16px;
 }
 
 /* .stTabs [aria-selected="true"] p {
@@ -69,11 +71,11 @@ button[kind='secondary'] {
   color: #ffffff;
   background-color: #FF4B4B;
 }
-div[data-testid='stNotificationContentSuccess'] {
+/* div[data-testid='stNotificationContentSuccess'] {
   color: #ffffff;
   font-weight: bold;
   font-size: 150%;
-}
+} */
 
 /* div[data-testid="metric-container"] {
   background-color: rgba(28, 131, 225, 0.1);
