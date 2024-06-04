@@ -648,7 +648,7 @@ with tab4:
             fig_m = px.line_polar(meal_df, r='probability', theta='meal_type', line_close=True)
             fig_m.update_layout(
             polar=dict(
-                bgcolor='#20365e',  # Background color
+                bgcolor='rgba(0,0,0,0)',  # Background color
                 radialaxis=dict(
                     visible=True,
                     tickfont=dict(color='#ffffff'),  # Font color
@@ -662,8 +662,8 @@ with tab4:
                 ),
                 #gridshape='linear'
             ),
-            plot_bgcolor='#20365e',  # Background color
-            paper_bgcolor='#20365e',  # Background color
+            plot_bgcolor='rgba(0,0,0,0)',  # Background color
+            paper_bgcolor='rgba(0,0,0,0)',  # Background color
             font=dict(color='#ffffff'),  # Font color
             )
             st.plotly_chart(fig_m)
@@ -673,18 +673,53 @@ with tab4:
             'lead_time': lead_time_m
     }
 
-        # #Get api model prediction
-        # if st.button('Check average daily rate'):
-        #     with st.spinner('Building crazy AI magic...'):
-        #         response_m = requests.get(url_m, params_m=params_m)
-        #         if (response_m.status_code) == 200:
-        #             meal_m = response_m.json()['adr']
-        #             st.markdown('''
-        #                 ######
-        #                 ''')
-        #             st.markdown('''
-        #                 ##### Average daily rate:
-        #                 ''')
-        #             st.metric('', f'{meal * 100:.0f}  US $', f'{(delta_a) * 100:.0f} % {change_A} than the mean average daily rate', label_visibility="collapsed")
-        #         else:
-        #             st.write('Error in API call')
+        #Get api model prediction
+        if st.button('Check average daily rate'):
+            with st.spinner('Building crazy AI magic...'):
+                response_m = requests.get(url_m, params_m=params_m)
+                if (response_m.status_code) == 200:
+                    probability_meal_BB = response_m.json()['']
+                    probability_meal_HB = response_m.json()['']
+                    probability_meal_FB = response_m.json()['']
+                    probability_meal_SC = response_m.json()['']
+                    meal_proba_dict = {'probability_meal_BB': probability_meal_BB,  'probability_meal_HB': probability_meal_HB, 'probability_meal_FB': probability_meal_FB, 'probability_meal_SC': probability_meal_SC}
+                    meal_code_hp = max(meal_proba_dict, key=meal_proba_dict.get)[-2:]
+                    meal_highest_proba = meal_m_dict[meal_code_hp]
+                    st.markdown('''
+                        ######
+                        ''')
+                    st.markdown('''
+                        ##### Most probable meal type:
+                        ''')
+                    st.metric('', f'{meal_highest_proba}', label_visibility="collapsed")
+                    st.markdown('''
+                    ##### Probability per meal type:
+                    ''')
+                    meal_df = pd.DataFrame(dict(
+                        probability = [probability_meal_BB, probability_meal_HB, probability_meal_FB, probability_meal_SC],
+                        meal_type = ['Bed and Breakfast', 'Half Board', 'Full Board', 'Self Catering']
+                    ))
+                    fig_m = px.line_polar(meal_df, r='probability', theta='meal_type', line_close=True)
+                    fig_m.update_layout(
+                    polar=dict(
+                        bgcolor='rgba(0,0,0,0)',  # Background color
+                        radialaxis=dict(
+                            visible=True,
+                            tickfont=dict(color='#ffffff'),  # Font color
+                            showticklabels=True,
+                            tickangle=0,
+                            dtick=0.1
+                        ),
+                        angularaxis=dict(
+                            visible=True,
+                            tickfont=dict(color='#ffffff'),  # Font color
+                        ),
+                        #gridshape='linear'
+                    ),
+                    plot_bgcolor='rgba(0,0,0,0)',  # Background color
+                    paper_bgcolor='rgba(0,0,0,0)',  # Background color
+                    font=dict(color='#ffffff'),  # Font color
+                    )
+                    st.plotly_chart(fig_m)
+                else:
+                    st.write('Error in API call')
