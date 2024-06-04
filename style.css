@@ -1,5 +1,5 @@
 .stApp {
-  background-color: #20365e;
+  background: linear-gradient(180deg, rgb(13, 39, 87) 0%, rgb(29, 71, 145) 80%, rgb(100, 81, 181) 100%);
   background-size: cover;
 }
 .block-container {
@@ -27,9 +27,9 @@ p {
   /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
 
-.stTabs [data-baseweb='tab-list'] {
+/* .stTabs [data-baseweb='tab-list'] {
   background-color: #20365e;
-}
+} */
 
 .stTabs [data-baseweb="tab-list"] button [data-testid='stMarkdownContainer'] p {
   font-size: 170%;
@@ -42,6 +42,7 @@ p {
 div [data-testid="stMarkdownContainer"] p {
   font-size: 16px;
 }
+
 
 /* .stTabs [aria-selected="true"] p {
 } */
