@@ -601,10 +601,10 @@ with tab4:
     lead_time_m = st.slider('Days until potential arrival:', 1, 100, 80, key='lead_time_m')
 
     meal_m_dict = {
-        'BB': 'Bed and breakfast',
-        'HB': 'Half board',
-        'FB': 'Full board',
-        'SC': 'Self catering'
+        'BB': 'Bed and Breakfast',
+        'HB': 'Half Board',
+        'FB': 'Full Board',
+        'SC': 'Self Catering'
         }
 
     url_m = ''
@@ -643,7 +643,7 @@ with tab4:
             ''')
             meal_df = pd.DataFrame(dict(
                 probability = [probability_meal_BB, probability_meal_HB, probability_meal_FB, probability_meal_SC],
-                meal_type = ['Bed and breakfast', 'Half board', 'Full board', 'Self catering']
+                meal_type = ['Bed and Breakfast', 'Half Board', 'Full Board', 'Self Catering']
             ))
             fig_m = px.line_polar(meal_df, r='probability', theta='meal_type', line_close=True)
             fig_m.update_layout(
