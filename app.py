@@ -40,10 +40,13 @@ async def async_request(url, params):
     return response.json()
 
 #Title
-'''
-# HOTEL BOOKING PREDICTOR
-'''
+logo_path = os.path.join('..', 'demand_prediction_app', 'images', 'hoTELLme_logo.svg')
+with open(logo_path, "r") as file:
+    svg_content = file.read()
 
+# Display the SVG file using st.image
+st.image(svg_content, use_column_width=True)
+#Tabs
 tab1, tab2, tab3, tab4 = st.tabs(['Cancellation', 'Target country', 'Average daily rate', 'Meal'])
 
 with tab1:

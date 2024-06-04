@@ -1,7 +1,27 @@
 .stApp {
-  background: linear-gradient(180deg, rgb(13, 39, 87) 0%, rgb(29, 71, 145) 80%, rgb(100, 81, 181) 100%);
+  background:
+        linear-gradient(150deg, #0C0A17, transparent 60%),
+        linear-gradient(330deg, #442717,  #351807, #140009, transparent 80%),
+        linear-gradient(50deg, #0C0A17, #2C4891, transparent 60%),
+        linear-gradient(225deg, #2b0112, #2C4891, #432a1b, #2C4891);
   background-size: cover;
 }
+/* .stApp { background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+} */
 .block-container {
   padding-top: 20px;
 }
@@ -11,33 +31,23 @@ h1 {
   color: #ffffff;
   font-size: 300%;
   font-weight: bold;
-  /* font-family: 'WF Visual Sans Text', sans-serif;*/
 }
 h2 {
   color: #ffffff;
-  /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
 h3, h4, h5, h6 {
   color: #ffffff;
   font-weight: normal;
-  /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
 p {
   color: #ffffff;
-  /* font-family: 'WF Visual Sans Text', sans-serif; */
 }
-
-/* .stTabs [data-baseweb='tab-list'] {
-  background-color: #20365e;
-} */
-
 .stTabs [data-baseweb="tab-list"] button [data-testid='stMarkdownContainer'] p {
   font-size: 170%;
   font-weight: normal;
 }
 .stTabs [data-baseweb='tab-panel'] {
   padding-top: 15px;
-  /* background-color: #ffffff; */
 }
 div [data-testid="stMarkdownContainer"] p {
   font-size: 16px;
@@ -51,71 +61,37 @@ div [data-testid="stMarkdownContainer"] p {
 }
 div[data-testid='stTickBarMax'] {
   color: #ffffff;
+  background-color: transparent !important;
 }
 div[data-testid='stTickBarMin'] {
   color: #ffffff;
+  background-color: transparent !important;
 }
-div[data-testid='stThumbValue'] {
+/* div[data-testid='stThumbValue'] {
   color: #ffffff;
+  background-color: transparent !important;
 }
 div.stSlider > div[data-baseweb="slider"] > div > div > div[role="slider"] {
   background-color: #ffffff;
 }
-
 div.stSlider > div[data-baseweb="slider"] > div > div > div > div {
   color: #ffffff;
 }
-/* button[kind='primary'] {
-} */
-button[kind='secondary'] {
-  color: #ffffff;
-  background-color: #FF4B4B;
-}
-/* div[data-testid='stNotificationContentSuccess'] {
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 150%;
-} */
+div.stSlider > div[data-baseweb = "slider"] > div > div {
+  background: #9fd3c7 }
+ */
 
-/* div[data-testid="metric-container"] {
-  background-color: rgba(28, 131, 225, 0.1);
-  border: 1px solid rgba(28, 131, 225, 0.1);
-  padding: 5% 5% 5% 10%;
-  border-radius: 5px;
-  color: rgb(30, 103, 119);
-  overflow-wrap: break-word;
-} */
-/* .stColumn > div {
-  background-color: #EEEEEE;
-  border: 1px solid #DCDCDC;
-  padding: 20px 20px 20px 70px;
-  padding: 5% 5% 5% 10%;
-  border-radius: 10px;
-} */
-/* .custom-container {
-  background-color: #f0f0f0;
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 20px;
-} */
-/* div[data-testid='stHorizontalBlock'] */
-/*
-div[data-testid="stHorizontalBlock"] class-st-emotion-cache-ocqkz7.e1f1d6gn5 {
-  background-color: #EEEEEE;
-  border: 1px solid #DCDCDC;
-  padding: 20px 20px 20px 70px;
-  padding: 5% 5% 5% 10%;
-  border-radius: 10px;
-}
 
-div.class-1wmy9hl.e1f1d6gn1 {
-  background-color: #EEEEEE;
-  border: 1px solid #DCDCDC;
-  padding: 20px 20px 20px 70px;
-  padding: 5% 5% 5% 10%;
-  border-radius: 10px;
-} */
+/* button[kind='secondary'] {
+  color: #ffffff;
+  background-color: #2C4891;
+}
+*/
 div[data-testid='stMetricValue'] {
   color: #ffffff;
+}
+div[data-testid="stMetric"] {
+  border-radius: 10px;
+  border: 2px solid rgba(225,225,225, 0.05);
+  padding: 10px;
 }
