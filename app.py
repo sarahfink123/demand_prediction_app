@@ -107,8 +107,8 @@ with tab1:
     columns_3[1].caption('The average inflation rate at the time of bookings is 2.04 %.')
     st.markdown('''######''')
 
-    url = 'https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict_is_canceled?'
-    #https://meal-predictor-g6vy2lia4a-ew.a.run.app/predict_is_canceled?lead_time=342&arrival_date_month=July&total_stay=0&adr=0&FUEL_PRCS=194&country=PRT&INFLATION=1.8
+    url = 'https://meal-predictor-g6vy2lia4a-ew.a.run.app/predict_is_canceled?'
+          #https://meal-predictor-g6vy2lia4a-ew.a.run.app/predict_is_canceled?lead_time=342&arrival_date_month=July&total_stay=0&adr=0&FUEL_PRCS=194&country=PRT&INFLATION=1.8
 
     if url == '':
         #Dummy prediction
