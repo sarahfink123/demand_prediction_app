@@ -67,6 +67,21 @@ div[data-testid='stTickBarMin'] {
   color: #ffffff;
   background-color: transparent !important;
 }
+
+div[data-baseweb="select"] .st-cu {
+  background-color: lightblue; /* Change this to your desired color */
+}
+
+ul[data-testid="stVirtualDropdown"] > div > div > li {
+  background-color: #ffffff; /* Change this to your desired color */
+}
+
+ul[data-testid="stVirtualDropdown"] > div > div > li:hover {
+  background-color: #7191E6; /* Change the hover color to your desired color */
+  color: #ffffff;
+}
+
+
 /* div[data-testid='stThumbValue'] {
   color: #ffffff;
   background-color: transparent !important;
@@ -94,4 +109,8 @@ div[data-testid="stMetric"] {
   border-radius: 10px;
   border: 2px solid rgba(225,225,225, 0.05);
   padding: 10px;
+}
+
+.small-font {
+  font-size: 12px;
 }

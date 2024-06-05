@@ -10,10 +10,9 @@ from streamlit_folium import st_folium
 from streamlit_folium import folium_static
 import plotly.express as px
 
-
 st.set_page_config(
         page_title="Demand predictor",
-        page_icon="🏩",
+        page_icon='🛏️',
         layout="wide",
     )
 
@@ -40,7 +39,7 @@ async def async_request(url, params):
     return response.json()
 
 #Title
-logo_path = os.path.join('..', 'demand_prediction_app', 'images', 'hoTELLme_logo.svg')
+logo_path = os.path.join('..', 'demand_prediction_app', 'images', 'hoTELLme_logo_blue.svg')
 with open(logo_path, "r") as file:
     svg_content = file.read()
 
@@ -64,7 +63,9 @@ with tab1:
                 ''')
     #adr
         #Range with toggle bar
-    adr = st.slider('Average daily rate in US $: (The average daily rate for bookings is 108.)', 0, 1000, 108)
+    adr = st.slider('Average daily rate in US $:', 0, 1000, 108)
+    st.caption('The average daily rate for bookings is 108.')
+    st.markdown('''######''')
     adr_plus = adr + 20
     adr_minus = adr - 20
     #Columns
@@ -75,31 +76,35 @@ with tab1:
     }
     country_nationalities = sorted(dict_of_countries.values())
         #Select from drop down
-    country_name = columns_1[0].selectbox('Nationality of customer:', country_nationalities)
+    country_name = columns_1[0].selectbox('Home country of customer:', country_nationalities)
     country_code = ([key for key, value in dict_of_countries.items() if value == country_name][0])
     #arrival_date_month
         #Select from drop down
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month = columns_1[1].selectbox('Month of arrival:', months)
+    st.markdown('''######''')
     #Columns
     columns_2 = st.columns(2)
     #lead_time
         #Range with toggle bar
-    lead_time = columns_2[0].slider('Days between time of booking and arrival: (The average delta between booking and arrival is 80 days.)', 1, 100, 80)
+    lead_time = columns_2[0].slider('Days between time of booking and arrival:', 1, 100, 80)
+    st.caption('The average delta between booking and arrival is 80 days.')
     lead_time_plus = lead_time + 20
     lead_time_minus = lead_time - 20
     #number of stays in nights
         #range with toggle bar
-    total_stay = columns_2[1].slider('Booked nights:', 0, 57, 3)
+    total_stay = columns_2[1].slider('Booked nights:', 1, 60, 3)
+    st.markdown('''######''')
     #Columns
     columns_3 = st.columns(2)
     #FUEL_PRCS
         #Range with toggle bar
-    FUEL_PRCS = columns_3[0].slider('Current fuel price in US $: (The average fuel price at the time of bookings is 157.)', 113, 204, 157)
+    FUEL_PRCS = columns_3[0].slider('Current fuel price in US $:', 110, 205, 157)
+    columns_3[0].caption('The average fuel price at the time of bookings is 157 US $.')
     #INFLATION
         #Range with toggle bar
-    INFLATION = columns_3[1].slider('Current inflation: (The average inflation rate at the time of bookings is 2.04.)', 1.6, 2.3, 2.0)
-
+    INFLATION = columns_3[1].slider('Current inflation in %:', 0.0, 10.0, 2.0)
+    columns_3[1].caption('The average inflation rate at the time of bookings is 2.04 %.')
 
     url = 'https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict?'
     #ALT: url = 'https://demand-prediction-g6vy2lia4a-ew.a.run.app/predict?'
@@ -276,7 +281,7 @@ with tab2:
     adults_c = columns_51[0].selectbox('Number of adults:', number_of_adults_c)
     #adr
         #Range with toggle bar
-    adr_c = columns_51[1].slider('Potential average daily rate ($):', 0, 1000, 108)
+    adr_c = columns_51[1].slider('Potential average daily rate in US $:', 0, 1000, 108)
     #Month
     months_c = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_c = columns_5[1].selectbox('Potential month of arrival:', months_c)
@@ -287,12 +292,10 @@ with tab2:
     lead_time_c = columns_6[0].slider('Days until potential arrival:', 1, 100, 80)
     #number of stays in nights
         #range with toggle bar
-    total_stay_c = columns_6[1].slider('Potential number of nights:', 0, 57, 3)
+    total_stay_c = columns_6[1].slider('Potential number of nights:', 1, 60, 3)
     #INFLATION
         #Range with toggle bar
-    INFLATION_c = st.slider('Current inflation:', 1.6, 2.3, 2.0)
-
-
+    INFLATION_c = st.slider('Current inflation in %:', 0.0, 10.0, 2.0, key='inflation_c')
     dict_of_countries_c = {
     'PRT': 'Portugal', 'GBR': 'Great Britain', 'ESP': 'Spain', 'FRA': 'France', 'DEU': 'Germany',
     }
@@ -419,11 +422,10 @@ with tab3:
     lead_time_a_minus = lead_time - 20
     #number of stays in nights
         #range with toggle bar
-    total_stay_a = columns_a3[0].slider('Potential number of nights:', 0, 57, 3, key='total_stay_a')
+    total_stay_a = columns_a3[0].slider('Potential number of nights:', 1, 60, 3, key='total_stay_a')
     #INFLATION
         #Range with toggle bar
-    INFLATION_a = columns_a3[1].slider('Current inflation:', 1.6, 2.3, 2.0, key='INFLATION_a')
-
+    INFLATION_a = columns_a3[1].slider('Current inflation in %:', 0.0, 10.0, 2.0, key='INFLATION_a')
 
     url_a = ''
 
@@ -598,7 +600,7 @@ with tab4:
     adults_m = columns_m2[0].selectbox('Number of adults:', number_of_adults_m, key='adults_m')
     #number of stays in nights
         #range with toggle bar
-    total_stay_m = columns_m2[1].slider('Potential number of nights:', 0, 57, 3, key='total_stay_m')
+    total_stay_m = columns_m2[1].slider('Potential number of nights:', 1, 60, 3, key='total_stay_m')
     #lead_time
         #Range with toggle bar
     lead_time_m = st.slider('Days until potential arrival:', 1, 100, 80, key='lead_time_m')
