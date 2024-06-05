@@ -44,14 +44,14 @@ with open(logo_path, "r") as file:
     svg_content = file.read()
 
 # Display the SVG file using st.image
-st.image(svg_content, use_column_width=True)
+st.image(svg_content)
 #Tabs
 tab1, tab2, tab3, tab4 = st.tabs(['Cancellation', 'Target country', 'Average daily rate', 'Meal'])
 
 with tab1:
     #Intro
     st.markdown('''
-    The cancellation predictor tells you if a hotel booking will be cancelled with an acurate probability. To predict the cancellation probability for an individual booking, please insert the booking parameters of the booking.
+    The cancellation predictor tells you if a hotel booking will be cancelled with an accurate probability. To predict the cancellation probability for an individual booking, please insert the booking parameters.
                 ''')
     st.markdown('''
     ######
@@ -76,7 +76,7 @@ with tab1:
     }
     country_nationalities = sorted(dict_of_countries.values())
         #Select from drop down
-    country_name = columns_1[0].selectbox('Home country of customer:', country_nationalities)
+    country_name = columns_1[0].selectbox('Origin country of customer:', country_nationalities)
     country_code = ([key for key, value in dict_of_countries.items() if value == country_name][0])
     #arrival_date_month
         #Select from drop down
@@ -105,12 +105,10 @@ with tab1:
         #Range with toggle bar
     INFLATION = columns_3[1].slider('Current inflation in %:', 0.0, 10.0, 2.0)
     columns_3[1].caption('The average inflation rate at the time of bookings is 2.04 %.')
+    st.markdown('''######''')
 
-    url = 'https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict?'
-    #ALT: url = 'https://demand-prediction-g6vy2lia4a-ew.a.run.app/predict?'
-    #https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict?lead_time=342&arrival_date_month=July&total_stay=0&adr=0&FUEL_PRCS=194&country=PRT&INFLATION=1.8
-    #https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict?lead_time=342&arrival_date_month=July&total_stay=0&adr=0&FUEL_PRCS=194&country=PRT&INFLATION=1.8
-    #https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict?country=ALB&FUEL_PRCS=157&lead_time=30&adr=108&arrival_date_month=January&total_stay=3&INFLATION=2.0
+    url = 'https://demand-predictor-g6vy2lia4a-ew.a.run.app/predict_is_canceled?'
+    #https://meal-predictor-g6vy2lia4a-ew.a.run.app/predict_is_canceled?lead_time=342&arrival_date_month=July&total_stay=0&adr=0&FUEL_PRCS=194&country=PRT&INFLATION=1.8
 
     if url == '':
         #Dummy prediction
@@ -253,7 +251,7 @@ with tab1:
 
 with tab2:
     #Intro
-    st.markdown('''The target country predictor tells you which countries you can target for underutilized time periods. To predict the target country (e.g., for marketing campagins) for a potential booking type, please insert the booking parameters for your aspired booking type:
+    st.markdown('''The target country predictor tells you which countries you can target for underutilized time periods. To predict the target country (e.g., for marketing campagins) for a potential booking type, please insert the booking parameters for your aspired booking type.
     ''')
     st.markdown('''
         ######
@@ -274,6 +272,7 @@ with tab2:
     hotel_names_c = dict_of_hotels_c.values()
     hotel_name_c = columns_5[0].selectbox('Hotel:', hotel_names_c)
     hotel_c = ([key for key, value in dict_of_hotels_c.items() if value == hotel_name_c][0])
+    # st.markdown('''######''')
     #Columns
     columns_51 = st.columns(2)
     #adults
@@ -285,7 +284,8 @@ with tab2:
     #Month
     months_c = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_c = columns_5[1].selectbox('Potential month of arrival:', months_c)
-        #Columns
+    # st.markdown('''######''')
+    #Columns
     columns_6 = st.columns(2)
     #lead_time
         #Range with toggle bar
@@ -293,6 +293,7 @@ with tab2:
     #number of stays in nights
         #range with toggle bar
     total_stay_c = columns_6[1].slider('Potential number of nights:', 1, 60, 3)
+    # st.markdown('''######''')
     #INFLATION
         #Range with toggle bar
     INFLATION_c = st.slider('Current inflation in %:', 0.0, 10.0, 2.0, key='inflation_c')
@@ -570,7 +571,7 @@ with tab3:
 with tab4:
     #Intro
     st.markdown('''
-    The meal predictor tells you which meal options customers will probably book. To predict the meal type for certain booking data, please insert the booking parameters of the booking.
+    The meal predictor tells you which meal options customers will probably book. To predict the meal plan for certain booking data, please insert the booking parameters of the booking.
                 ''')
     st.markdown('''
     ######
@@ -583,13 +584,8 @@ with tab4:
     #Column
     columns_m1 = st.columns(2)
     #Hotel
-    dict_of_hotels_m = {
-        1: 'City Hotel',
-        0: 'Resort Hotel'
-        }
-    hotel_names_m = dict_of_hotels_m.values()
-    hotel_name_m = columns_m1[0].selectbox('Hotel:', hotel_names_m, key='Hotel_m')
-    hotel_m = ([key for key, value in dict_of_hotels_m.items() if value == hotel_name_m][0])
+    hotels_m = ['City Hotel', 'Resort Hotel']
+    hotel_m = columns_m1[0].selectbox('Hotel:', hotels_m, key='Hotel_m')
     #Months
     months_m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month_m = columns_m1[1].selectbox('Potential month of arrival:', months_m, key='month_m')
@@ -612,12 +608,12 @@ with tab4:
         'SC': 'Self Catering'
         }
 
-    url_m = ''
+    url_m = 'https://meal-predictor-g6vy2lia4a-ew.a.run.app/predict_is_meal?'
 
     if url_m == '':
         #Dummy prediction
         #Prediction needs to be given out as average_daily_rate and stored accordingly.
-        if st.button('Check meal type (dummy)'):
+        if st.button('Check meal plan (dummy)'):
             if month_m in ['October', 'November', 'December']:
                 probability_meal_BB = 0.23
                 probability_meal_HB = 0.27
@@ -640,17 +636,17 @@ with tab4:
                 ######
                 ''')
             st.markdown('''
-                ##### Most probable meal type:
+                ##### Most probable meal plan:
                 ''')
             st.metric('', f'{meal_m}', label_visibility="collapsed")
             st.markdown('''
-            ##### Probability per meal type:
+            ##### Probability per meal plan:
             ''')
             meal_df = pd.DataFrame(dict(
                 probability = [probability_meal_BB, probability_meal_HB, probability_meal_FB, probability_meal_SC],
-                meal_type = ['Bed and Breakfast', 'Half Board', 'Full Board', 'Self Catering']
+                meal_plan = ['Bed and Breakfast', 'Half Board', 'Full Board', 'Self Catering']
             ))
-            fig_m = px.line_polar(meal_df, r='probability', theta='meal_type', line_close=True)
+            fig_m = px.line_polar(meal_df, r='probability', theta='meal_plan', line_close=True)
             fig_m.update_layout(
             polar=dict(
                 bgcolor='rgba(0,0,0,0)',  # Background color
@@ -675,18 +671,41 @@ with tab4:
 
     else:
         params_m = {
-            'lead_time': lead_time_m
+            'hotel': hotel_m,
+            'is_canceled': 0,
+            'lead_time': lead_time_m,
+            'adults': adults_m,
+            'is_repeated_guest': 0,
+            'adr': 99.3,
+            'CPI_AVG': 241.176,
+            'INFLATION': 2.1,
+            'INFLATION_CHG': 0,
+            'CSMR_SENT': 93.4,
+            'UNRATE': 4.8,
+            'INTRSRT': 1.0,
+            'GDP': 18775.459,
+            'FUEL_PRCS': 161.1,
+            'CPI_HOTELS': 0.176265,
+            'US_GINI': 41.1,
+            'DIS_INC':41852.0,
+            'total_stays': total_stay_m,
+            'market_segment': 'Online TA',
+            'distribution_channel': 'TA/TO',
+            'reservation_status': 'Check-Out',
+            'country': 'PRT',
+            'arrival_date_month': month_m,
     }
 
         #Get api model prediction
-        if st.button('Check average daily rate'):
+        if st.button('Check meal plan'):
             with st.spinner('Building crazy AI magic...'):
-                response_m = requests.get(url_m, params_m=params_m)
+                response_m = requests.get(url_m, params=params_m)
                 if (response_m.status_code) == 200:
-                    probability_meal_BB = response_m.json()['']
-                    probability_meal_HB = response_m.json()['']
-                    probability_meal_FB = response_m.json()['']
-                    probability_meal_SC = response_m.json()['']
+                    probabilities = response_m.json()['prediction_probability']
+                    probability_meal_BB = probabilities['BB']
+                    probability_meal_HB = probabilities['HB']
+                    probability_meal_FB = probabilities['FB']
+                    probability_meal_SC = probabilities['SC']
                     meal_proba_dict = {'probability_meal_BB': probability_meal_BB,  'probability_meal_HB': probability_meal_HB, 'probability_meal_FB': probability_meal_FB, 'probability_meal_SC': probability_meal_SC}
                     meal_code_hp = max(meal_proba_dict, key=meal_proba_dict.get)[-2:]
                     meal_highest_proba = meal_m_dict[meal_code_hp]
@@ -694,17 +713,17 @@ with tab4:
                         ######
                         ''')
                     st.markdown('''
-                        ##### Most probable meal type:
+                        ##### Most probable meal plan:
                         ''')
                     st.metric('', f'{meal_highest_proba}', label_visibility="collapsed")
                     st.markdown('''
-                    ##### Probability per meal type:
+                    ##### Probability per meal plan:
                     ''')
                     meal_df = pd.DataFrame(dict(
                         probability = [probability_meal_BB, probability_meal_HB, probability_meal_FB, probability_meal_SC],
-                        meal_type = ['Bed and Breakfast', 'Half Board', 'Full Board', 'Self Catering']
+                        meal_plan = ['Bed and Breakfast', 'Half Board', 'Full Board', 'Self Catering']
                     ))
-                    fig_m = px.line_polar(meal_df, r='probability', theta='meal_type', line_close=True)
+                    fig_m = px.line_polar(meal_df, r='probability', theta='meal_plan', line_close=True)
                     fig_m.update_layout(
                     polar=dict(
                         bgcolor='rgba(0,0,0,0)',  # Background color
