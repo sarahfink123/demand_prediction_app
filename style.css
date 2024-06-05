@@ -69,7 +69,7 @@ div[data-testid='stTickBarMin'] {
 }
 
 div[data-baseweb="select"] .st-cu {
-  background-color: lightblue; /* Change this to your desired color */
+  background-color: #ffffff; /* Change this to your desired color */
 }
 
 ul[data-testid="stVirtualDropdown"] > div > div > li {
