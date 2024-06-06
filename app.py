@@ -62,13 +62,6 @@ with tab1:
     st.markdown('''
     ##### Insert booking data:
                 ''')
-    #adr
-        #Range with toggle bar
-    adr = st.slider('Average daily rate in US $:', 0, 1000, 108)
-    st.caption('The average daily rate for bookings is 108.')
-    st.markdown('''######''')
-    adr_plus = adr + 20
-    adr_minus = adr - 20
     #Columns
     columns_1 = st.columns(2)
     #country
@@ -84,6 +77,13 @@ with tab1:
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     month = columns_1[1].selectbox('Month of arrival:', months)
     st.markdown('''######''')
+    #adr
+        #Range with toggle bar
+    adr = st.slider('Average daily rate in US $:', 0, 1000, 108)
+    st.caption('The average daily rate for bookings is 108.')
+    st.markdown('''######''')
+    adr_plus = adr + 20
+    adr_minus = adr - 20
     #Columns
     columns_2 = st.columns(2)
     #lead_time
