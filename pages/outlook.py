@@ -59,7 +59,7 @@ st.markdown('''
 col1 = st.columns(20)
 if col1[19].button('→', type='primary'):
     # Path to the image
-    thanks_path = os.path.join('..', 'demand_prediction_app', 'images', 'HoTELLme_thanks.png')
+    thanks_path = os.path.join('..', 'demand_prediction_app', 'images', 'HoTELLme_thanks_1.png')
 
     # Get the base64-encoded image string
     base64_image_thanks = get_base64_image(thanks_path)
