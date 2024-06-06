@@ -16,7 +16,7 @@ def get_base64_image(image_path):
     return encoded_string
 
 # Path to the image
-lobby_path = os.path.join('..', 'demand_prediction_app', 'images', 'HoTELLme_lobby.png')
+lobby_path = os.path.join('..', 'demand_prediction_app', 'images', 'HoTELLme_lobby_1.png')
 
 # Get the base64-encoded image string
 base64_image = get_base64_image(lobby_path)
