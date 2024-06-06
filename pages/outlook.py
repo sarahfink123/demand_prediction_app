@@ -50,5 +50,32 @@ hide_streamlit_style = """
 
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-col1 = st.columns(10)
-col1[9].link_button('→', 'https://hotellme.streamlit.app/thanks', type='primary')
+st.markdown('''
+#
+#
+#
+            ''')
+
+col1 = st.columns(20)
+if col1[19].button('→', type='primary'):
+    # Path to the image
+    thanks_path = os.path.join('..', 'demand_prediction_app', 'images', 'HoTELLme_thanks.png')
+
+    # Get the base64-encoded image string
+    base64_image_thanks = get_base64_image(thanks_path)
+
+    # Define CSS style for background
+    style_thanks = f"""
+    <style>
+    .stApp {{
+        background-image: url('data:image/png;base64,{base64_image_thanks}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+    }}
+    </style>
+    """
+
+    # Inject the CSS style
+    st.markdown(style_thanks, unsafe_allow_html=True)

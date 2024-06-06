@@ -51,5 +51,26 @@ hide_streamlit_style = """
 
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-col1 = st.columns(10)
-col1[9].link_button('→', 'https://hotellme.streamlit.app/intro', type='primary')
+col1 = st.columns(20)
+
+
+if col1[19].button('→', type='primary'):
+    # Path to the image
+    intro_path = os.path.join('..', 'demand_prediction_app', 'images', 'HoTELLme_intro.png')
+    # Get the base64-encoded image string
+    base64_image_intro = get_base64_image(intro_path)
+    # Define CSS style for background
+    style_intro = f"""
+    <style>
+    .stApp {{
+        background-image: url('data:image/png;base64,{base64_image_intro}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+    }}
+    </style>
+    """
+    # Inject the CSS style
+    st.markdown(style_intro, unsafe_allow_html=True)
+    col1[19].link_button('↗', 'https://hotellme.streamlit.app/', type='primary')
