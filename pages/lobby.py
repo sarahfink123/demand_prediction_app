@@ -52,4 +52,4 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 col1 = st.columns(10)
-col1[9].link_button('→', 'http://localhost:8501/intro', type='primary')
+col1[9].link_button('→', 'https://hotellme.streamlit.app/intro', type='primary')
